@@ -26,13 +26,13 @@
     <Text Include="noWin3d.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="OWin1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="OWin2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="OWin3d.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="test1.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

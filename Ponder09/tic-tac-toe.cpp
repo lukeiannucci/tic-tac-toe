@@ -64,8 +64,8 @@ bool read(char board[][BOARD_SIZE], const char* fileName)
       return false;
 
    // read 9 symbols, hopefully they are . X O
-   for (int r = 0; r < 3; r++)
-      for (int c = 0; c < 3; c++)
+   for (int r = 0; r < BOARD_SIZE; r++)
+      for (int c = 0; c < BOARD_SIZE; c++)
       {
          fin >> board[r][c];
          assert(!fin.fail());
@@ -83,7 +83,7 @@ bool read(char board[][BOARD_SIZE], const char* fileName)
  * WRITE
  * Write to fileName the board data
  *********************************************************/
-bool write(const char board[][3], const char* fileName)
+bool write(const char board[][BOARD_SIZE], const char* fileName)
 {
    assert(fileName[0] != '\0');
 
@@ -93,9 +93,9 @@ bool write(const char board[][3], const char* fileName)
       return false;
 
    // write my 9 symbols
-   for (int r = 0; r < 3; r++)
-      for (int c = 0; c < 3; c++)
-         fout << board[r][c] << (c == 2 ? '\n' : ' ');
+   for (int r = 0; r < BOARD_SIZE; r++)
+      for (int c = 0; c < BOARD_SIZE; c++)
+         fout << board[r][c] << (c == (BOARD_SIZE - 1) ? '\n' : ' ');
 
    // close it!
    fout.close();
@@ -109,15 +109,28 @@ bool write(const char board[][3], const char* fileName)
  *****************************************************/
 void display(const char board[][BOARD_SIZE])
 {
+	string divider = "";
+	for (int i = 0; i < BOARD_SIZE; i++)
+	{
+		
+		if (i != (BOARD_SIZE - 1))
+		{
+			divider += "---+";
+		}
+		else
+		{
+			divider += "---\n";
+		}
+	}
    // loop through each row
-   for (int r = 0; r < 3; r++)
+   for (int r = 0; r < BOARD_SIZE; r++)
    {
       // only the first row is not preceeded with the --+-- magic
       if (r != 0)
-         cout << "---+---+---\n";
+         cout << divider.c_str();
 
       // now, on each row, do the column stuff
-      for (int c = 0; c < 3; c++)
+      for (int c = 0; c < BOARD_SIZE; c++)
       {
          // display a space for the dot
          if (board[r][c] == DOT)
@@ -126,7 +139,7 @@ void display(const char board[][BOARD_SIZE])
             cout << " " << board[r][c] << " ";
 
          // end with a | or a newline
-         cout << (c == 2 ? '\n' : '|');
+         cout << (c == (BOARD_SIZE - 1) ? '\n' : '|');
       }
    }
 
@@ -144,7 +157,66 @@ void display(const char board[][BOARD_SIZE])
  * Did a given player (determined by the "turn"
  * variable) win the game?
  *******************************************/
-bool didWin(const char board[][3], char turn)
+bool didWin(const char board[][BOARD_SIZE], char turn)
 {
-   return false;
+	bool isLeftToRightDiagnolWon = true;
+	bool isRightToLeftDiagnolWon = true;
+	int colCounter = 0;
+	int highestCount = 0;
+	//check col first
+	for (int r = 0; r < BOARD_SIZE; r++)
+	{
+		for (int c = 0; c < BOARD_SIZE; c++)
+		{
+			
+			//we do not have a match
+			if (board[r][c] != turn)
+			{
+				//check if it is diagnol
+				//if so and it isnt the turn diagnol is false
+				if (r == c && isLeftToRightDiagnolWon)
+				{
+					isLeftToRightDiagnolWon = false;
+				}
+				else if ((r + c) == (BOARD_SIZE - 1) && isRightToLeftDiagnolWon)
+				{
+					isRightToLeftDiagnolWon = false;
+				}
+			}
+			else
+			{
+				colCounter++;
+			}
+			//we are about to change rows, reset
+			if (c == (BOARD_SIZE - 1))
+			{
+				if (highestCount < colCounter)
+				{
+					highestCount = colCounter;
+				}
+				colCounter = 0;
+			}
+		}
+	}
+	if (isLeftToRightDiagnolWon || isRightToLeftDiagnolWon || highestCount == BOARD_SIZE)
+	{
+		return true;
+	}
+	for (int c = 0; c < BOARD_SIZE; c++)
+	{
+		for (int r = 0; r < BOARD_SIZE; r++)
+		{
+			//we do not have a match move to next row
+			if (board[r][c] != turn)
+			{
+				break;
+			}
+			//check if we are at the end and it matches if so we won
+			else if (r == (BOARD_SIZE - 1) && board[r][c] == turn)
+			{
+				return true;
+			}
+		}
+	}
+    return false;
 }

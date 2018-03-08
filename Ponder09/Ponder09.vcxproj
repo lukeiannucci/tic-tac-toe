@@ -120,8 +120,8 @@
   <ItemGroup>
     <Text Include="noWin1.txt" />
     <Text Include="noWin3d.txt" />
-    <Text Include="OWin1.txt" />
-    <Text Include="OWin2.txt" />
+    <Text Include="test1.txt" />
+    <Text Include="test.txt" />
     <Text Include="OWin3d.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
