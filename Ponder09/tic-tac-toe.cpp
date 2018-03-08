@@ -9,18 +9,21 @@
 #include <fstream>
 #include <cassert>
 using namespace std;
-
-bool read(         char board[][3], const char* fileName);
-bool write(  const char board[][3], const char* fileName);
-void display(const char board[][3]);
-bool didWin( const char board[][3], char turn);
+#define X 'X'
+#define O 'O'
+#define DOT '.'
+#define BOARD_SIZE 3
+bool read(         char board[][BOARD_SIZE], const char* fileName);
+bool write(  const char board[][BOARD_SIZE], const char* fileName);
+void display(const char board[][BOARD_SIZE]);
+bool didWin( const char board[][BOARD_SIZE], char turn);
 
 /**********************************************************************
  * Keeps the data and calles the read/display/write functions
  ***********************************************************************/
 int main()
 {
-   char board[3][3];
+   char board[BOARD_SIZE][BOARD_SIZE];
 
    // read the board
    char fileName[256];
@@ -51,7 +54,7 @@ int main()
  * READ
  * Read the board from the specified filename
  *************************************************************/
-bool read(char board[][3], const char* fileName)
+bool read(char board[][BOARD_SIZE], const char* fileName)
 {
    assert(*fileName);
 
@@ -66,9 +69,9 @@ bool read(char board[][3], const char* fileName)
       {
          fin >> board[r][c];
          assert(!fin.fail());
-         assert(board[r][c] == 'X' ||
-                board[r][c] == 'O' ||
-                board[r][c] == '.');
+         assert(board[r][c] == X ||
+                board[r][c] == O ||
+                board[r][c] == DOT);
       }
 
    // close the file
@@ -104,7 +107,7 @@ bool write(const char board[][3], const char* fileName)
  * DISPLAY
  * Display the contents the the screen
  *****************************************************/
-void display(const char board[][3])
+void display(const char board[][BOARD_SIZE])
 {
    // loop through each row
    for (int r = 0; r < 3; r++)
@@ -117,7 +120,7 @@ void display(const char board[][3])
       for (int c = 0; c < 3; c++)
       {
          // display a space for the dot
-         if (board[r][c] == '.')
+         if (board[r][c] == DOT)
             cout << "   ";
          else
             cout << " " << board[r][c] << " ";
@@ -128,9 +131,9 @@ void display(const char board[][3])
    }
 
    // display who won
-   if (didWin(board, 'X'))
+   if (didWin(board, X))
       cout << "X won!\n";
-   if (didWin(board, 'O'))
+   if (didWin(board, O))
       cout << "O won!\n";
    
    return;
